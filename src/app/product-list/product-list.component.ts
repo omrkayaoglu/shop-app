@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from '../models/product';
@@ -10,10 +11,10 @@ import { ProductRepository } from '../models/product.repository';
 })
 export class ProductListComponent implements OnInit {
 
-  products: Product[];
+  products: Product[] = [];
   productRepository: ProductRepository;
 
-  constructor(private route: ActivatedRoute) { 
+  constructor(private route: ActivatedRoute, private http: HttpClient) { 
     this.productRepository = new ProductRepository();
   }
 
@@ -21,8 +22,15 @@ export class ProductListComponent implements OnInit {
     this.route.params.subscribe(params => {
       if(params["categoryId"]) {
         this.products = this.productRepository.getProductsByCategoryId(params["categoryId"]);
-      } else {
-        this.products = this.productRepository.getProducts();
+      } else {       
+
+        this.http.get<Product[]>("https://ng-shopapp-d4ef5-default-rtdb.firebaseio.com/products.json")
+          .subscribe(result => {
+            for(const key in result) {
+              this.products.push({ ...result[key], id: key });
+            }
+          });
+
       }
     });
   }

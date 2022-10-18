@@ -27,7 +27,7 @@ export class AppComponent {
       categoryId: 1 
     }
 
-    this.http.post('<api_adresiniz>', product)
+    this.http.post('https://ng-shopapp-d4ef5-default-rtdb.firebaseio.com/products.json', product)
       .subscribe(data => console.log(data));
 
   }
