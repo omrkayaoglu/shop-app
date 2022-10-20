@@ -6,15 +6,19 @@ import { Product } from "../models/product";
 // local service
 @Injectable()
 export class ProductService {
-    private url = "https://ng-shopapp-d4ef5-default-rtdb.firebaseio.com/products.json";
+    private url = "https://ng-shopapp-d4ef5-default-rtdb.firebaseio.com/";
 
     constructor(private http: HttpClient) {}
 
     getProducts(): Observable<Product[]> {
-        return this.http.get<Product[]>(this.url);
+        return this.http.get<Product[]>(this.url + "products.json");
+    }
+
+    getProductById(id: string): Observable<Product> {
+        return this.http.get<Product>(this.url + "products/" + id + ".json")
     }
 
     createProduct(product: Product): Observable<Product> {
-        return this.http.post<Product>(this.url, product);
+        return this.http.post<Product>(this.url + "products.json", product);
     }
 }

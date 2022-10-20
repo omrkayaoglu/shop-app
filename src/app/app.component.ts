@@ -24,9 +24,9 @@ export class AppComponent {
 
     const product = { 
       id: 1, 
-      name: "iphone 23", 
+      name: "iphone 19", 
       price: 20000, 
-      imageUrl: "1.jpeg", 
+      imageUrl: "3.jpeg", 
       description: "iyi telefon", 
       isActive: true, 
       categoryId: 2 
