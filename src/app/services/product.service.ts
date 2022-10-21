@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, map, tap } from "rxjs";
 import { Product } from "../models/product";
 
 // local service
@@ -10,8 +10,28 @@ export class ProductService {
 
     constructor(private http: HttpClient) {}
 
-    getProducts(): Observable<Product[]> {
-        return this.http.get<Product[]>(this.url + "products.json");
+    getProducts(categoryId: number): Observable<Product[]> {
+        return this.http
+            .get<Product[]>(this.url + "products.json")
+            .pipe(
+                map(data => {
+                    const products: Product[] = [];
+
+                    for(const key in data) {
+                        if(categoryId) {
+                            if(categoryId == data[key].categoryId) {
+                                products.push({ ...data[key], id: key });
+                            }
+                        }
+                        else {
+                            products.push({ ...data[key], id: key });
+                        }
+                    }
+
+                    return products;
+                }),
+                tap(data => console.log(data))
+            );
     }
 
     getProductById(id: string): Observable<Product> {
