@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Category } from '../models/category';
 import { CategoryService } from '../services/category.service';
@@ -20,7 +21,13 @@ export class ProductCreateComponent implements OnInit {
     categoryId: "0"
   };
   // two-way binding
+
   // ngModel => control
+  // ngForm => form
+
+  // valid - invalid
+  // pristine - dirty
+  // touched - untouched
 
   constructor(
     private productService: ProductService,
@@ -34,50 +41,38 @@ export class ProductCreateComponent implements OnInit {
     });
   }
 
-  saveProduct() {
+  saveProduct(form: NgForm) {
 
-    // name:any,price:any,imageUrl:any,description:any,isActive:any,categoryId:any
-    // if(name.value == "" || name.value.length < 5) {
-    //   this.error = "ürün ismi en az 5 karakter giriniz.";
-    //   return;
-    // }
+    const extensions = ["jpeg","jpg","png"];
+    const extension = this.model.imageUrl.split(".").pop();
 
-    // if(price.value == "") {
-    //   this.error ="ürün firyatı girmelisiniz.";
-    //   return;
-    // }
+    if(extensions.indexOf(extension) == -1) {
+      this.error ="resim uzantısı sadece jpeg, jpg, png olmalıdır.";
+      return;
+    }
 
-    // if(imageUrl.value == "") {
-    //   this.error ="resim ismi girmelisiniz.";
-    //   return;
-    // }
+    if(this.model.categoryId == "0") {
+      this.error ="kategori seçmelisiniz.";
+      return;
+    }
 
-    // const extensions = ["jpeg","jpg","png"];
-    // const extension = imageUrl.value.split(".").pop();
+    const product = { 
+      id: 1, 
+      name: this.model.name, 
+      price: this.model.price, 
+      imageUrl: this.model.imageUrl, 
+      description: this.model.description, 
+      isActive: this.model.isActive, 
+      categoryId: this.model.categoryId
+    }
 
-    // if(extensions.indexOf(extension) == -1) {
-    //   this.error ="resim uzantısı sadece jpeg, jpg, png olmalıdır.";
-    //   return;
-    // }
-
-    // if(categoryId.value == "0") {
-    //   this.error ="kategori seçmelisiniz.";
-    //   return;
-    // }
-
-    // const product = { 
-    //   id: 1, 
-    //   name: name.value, 
-    //   price: price.value, 
-    //   imageUrl: imageUrl.value, 
-    //   description: description.value, 
-    //   isActive: isActive.checked, 
-    //   categoryId: categoryId.value
-    // }
-
-    // this.productService.createProduct(product).subscribe(data => {
-    //   this.router.navigate(['/products']);
-    // });
+    if(form.valid) {
+      this.productService.createProduct(product).subscribe(data => {
+        this.router.navigate(['/products']);
+      });
+    } else {
+      this.error ="formu kontrol ediniz.";
+    }
 
     console.log(this.model);
 
