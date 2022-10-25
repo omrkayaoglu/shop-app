@@ -1,5 +1,7 @@
-<div *ngIf="products.length>0; else noProducts">
-    <ng-template [ngTemplateOutlet]="productList" [ngTemplateOutletContext]="{products: products}"></ng-template>
+<div *ngIf="!loading">
+    <div *ngIf="products.length>0; else noProducts">
+        <ng-template [ngTemplateOutlet]="productList" [ngTemplateOutletContext]="{products: products}"></ng-template>
+    </div>
 </div>
 
 <ng-template #productList let-products="products">
@@ -26,3 +28,7 @@
         no products
     </div>
 </ng-template>
+
+<div *ngIf="loading" class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+</div>
