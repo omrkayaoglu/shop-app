@@ -1,14 +1,15 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, map, tap, delay } from "rxjs";
+import { Observable, map, tap, delay, take, exhaustMap } from "rxjs";
 import { Product } from "../models/product";
+import { AuthService } from "./auth.service";
 
 // local service
 @Injectable()
 export class ProductService {
-    private url = "https://ng-shopapp-d4ef5-default-rtdb.firebaseio.com/";
+    private url = "https://ng-shopapp-13e6b-default-rtdb.firebaseio.com/";
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, private authService : AuthService) {}
 
     getProducts(categoryId: number): Observable<Product[]> {
         return this.http
@@ -40,6 +41,11 @@ export class ProductService {
     }
 
     createProduct(product: Product): Observable<Product> {
-        return this.http.post<Product>(this.url + "products.json", product);
+        return this.authService.user.pipe(
+            take(1),
+            exhaustMap(user => {
+                return this.http.post<Product>(this.url + "products.json?auth=" + user?.token, product);
+            }
+        ));
     }
 }

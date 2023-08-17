@@ -15,6 +15,8 @@ export class ProductListComponent implements OnInit {
 
   products: Product[] = [];
   loading: boolean = false;
+  isFavorite: boolean = false;
+  favorites: Product[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -31,6 +33,17 @@ export class ProductListComponent implements OnInit {
       });
 
     });
+  }
+  addFavorite() {
+    this.isFavorite = !this.isFavorite;
+    if (this.isFavorite) {
+      this.favorites.push(this.products[0]);
+      console.log(this.favorites)
+      console.log("Favoriye eklendi")
+      return;
+    }
+      console.log(this.favorites)
+      console.log("Favoriden çıkarıldı")
   }
 
 }

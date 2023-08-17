@@ -12,6 +12,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { ProductCreateComponent } from './product-create/product-create.component';
 import { CategoryCreateComponent } from './category-create/category-create.component';
 import { FormsModule } from '@angular/forms';
+import { CKEditorModule } from 'ckeditor4-angular';
+import { AuthComponent } from './auth/auth.component';
+import { FavoriteListComponent } from './favorite-list/favorite-list.component';
 
 @NgModule({
   declarations: [
@@ -22,13 +25,16 @@ import { FormsModule } from '@angular/forms';
     CategoryListComponent,
     HomeComponent,
     ProductCreateComponent,
-    CategoryCreateComponent
+    CategoryCreateComponent,
+    AuthComponent,
+    FavoriteListComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    CKEditorModule
   ],
   providers: [],
   bootstrap: [AppComponent]
